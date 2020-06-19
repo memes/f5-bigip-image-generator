@@ -67,7 +67,7 @@ class GoogleImage(BaseImage):
 
         # Create a service object from the credentials
         self.gce_credentials = credentials
-        self.gce_service = discovery.build('compute', 'v1', credentials=self.gce_credentials)
+        self.gce_service = discovery.build('compute', 'beta', credentials=self.gce_credentials)
 
     def clean_up(self):
         """Clean-up cloud objects created by this class and its members."""
@@ -156,7 +156,10 @@ class GoogleImage(BaseImage):
         family_name = get_config_value('GCE_IMAGE_FAMILY_NAME')
         if family_name:
             image_body['family'] = family_name
-
+        if get_config_value('GCE_IMAGE_ENABLE_GVE'):
+            image_body['guestOsFeatures'] = [{
+                "type": "GVNIC"
+            }]
         try:
             # pylint: disable=no-member
             request = self.gce_service.images().insert(project=self.gce_project_id, body=image_body)

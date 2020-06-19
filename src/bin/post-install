@@ -601,6 +601,22 @@ function ensure_shared_dir_is_unmounted() {
         log_echo "Cannot unmount /shared"
     fi
 }
+
+# XXX: Update module dependencies so gve is known to kernel, if it was installed
+function refresh_depmod() {
+    dbg_echo "${FUNCNAME[0]} - begin"
+    for m in ${INST_ROOT}/lib/modules/*; do
+        target=${m##${INST_ROOT}/lib/modules/}
+        if [[ -d "${m}" ]]; then
+            log_echo "Running depmod for ${target} in chroot"
+            if ! $CHROOT_BIN "${INST_ROOT}" /usr/sbin/depmod -a ${target}; then
+                err_exit "depmod for ${target} failed with rc=<$?>"
+            fi
+        fi
+    done
+    dbg_echo "${FUNCNAME[0]} - end"
+}
+
 #####################################################################
 
 for _ in {1..15} ; do dbg_echo "" ; done
@@ -625,6 +641,7 @@ if [ -f "$VADC_PLATFORM_FILE" ]; then
     ensure_shared_dir_is_mounted
     copy_injected_files
     ensure_shared_dir_is_unmounted
+    refresh_depmod
 
     if [[ -f "$LEGACY_LABELING" ]]; then
         dbg_echo "Adding legacy selinux labeling scripts."
