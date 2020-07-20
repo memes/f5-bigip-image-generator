@@ -156,7 +156,7 @@ class GoogleImage(BaseImage):
         family_name = get_config_value('GCE_IMAGE_FAMILY_NAME')
         if family_name:
             image_body['family'] = family_name
-        if get_config_value('GCE_IMAGE_ENABLE_GVE'):
+        if bool(get_config_value('GCE_IMAGE_ENABLE_GVE')):
             image_body['guestOsFeatures'] = [{
                 "type": "GVNIC"
             }]
