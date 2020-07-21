@@ -93,8 +93,7 @@ GCE_IMAGE_FAMILY_NAME:
     An image family name to apply in GCP. E.g. 'bigip-15-1-custom'
 
 GCE_IMAGE_ENABLE_GVE:
-  accepted: "^[01]$"
-  default: 0
+  parameters: 0
   description: >-
-    Set to 1 to enable GVE support on the image. This sets a flag that may make
-    the image restricted to supported regions and zones.
+    Enable GVE support on the image. This sets a flag that may make the image
+    restricted to supported regions and zones.
