@@ -610,7 +610,7 @@ function refresh_depmod() {
         if [[ -d "${m}" ]]; then
             log_echo "Running depmod for ${target} in chroot"
             if ! $CHROOT_BIN "${INST_ROOT}" /usr/sbin/depmod -a ${target}; then
-                err_exit "depmod for ${target} failed with rc=<$?>"
+                log_echo "depmod for ${target} failed with rc=<$?>"
             fi
         fi
     done
@@ -622,7 +622,7 @@ function refresh_depmod() {
 function patch_f5_swap_eth() {
     dbg_echo "${FUNCNAME[0]} - begin"
     [ -e "${INST_ROOT}/sbin/f5-swap-eth" ] && \
-        sed -i 's#/proc/cmdline#/config/cloud/mgmt_bridge.conf#' ${INST_ROOT}/sbin/f5-swap-eth
+        sed -i '/\/proc\/cmdline/c\        swap_mgmt=`grep -s -o "mgmt_bridge=eth[0-9]*" /config/cloud/mgmt_bridge.conf`' ${INST_ROOT}/sbin/f5-swap-eth
     dbg_echo "${FUNCNAME[0]} - end"
 }
 
