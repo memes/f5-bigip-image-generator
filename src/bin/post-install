@@ -651,9 +651,9 @@ if [ -f "$VADC_PLATFORM_FILE" ]; then
     copy_injected_files
     ensure_shared_dir_is_unmounted
     refresh_depmod
-    if [ "$TMI_VADC_HYPERVISOR" != "" ] && [ "$TMI_VADC_HYPERVISOR" != "0" ]; then
-        patch_f5_swap_eth
-    fi
+    #if [ "$TMI_VADC_HYPERVISOR" != "" ] && [ "$TMI_VADC_HYPERVISOR" != "0" ]; then
+    #    patch_f5_swap_eth
+    #fi
 
     if [[ -f "$LEGACY_LABELING" ]]; then
         dbg_echo "Adding legacy selinux labeling scripts."
